@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengguna dan Postingan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Pengguna dan Postingan</h1>
+        <div class="button-group">
+            <button id="callback-btn">Load Data (Callback)</button>
+            <button id="promise-btn">Load Data (Promise)</button>
+            <button id="async-await-btn">Load Data (Async/Await)</button>
+        </div>
+        <div id="user-info" class="card">
+            <h2>Informasi Pengguna</h2>
+            <p id="user-name"><strong>Nama:</strong> <span></span></p>
+            <p id="user-email"><strong>Email:</strong> <span></span></p>
+            <p id="user-city"><strong>Kota:</strong> <span></span></p>
+        </div>
+        <div id="user-posts" class="card">
+            <h2>Daftar Postingan</h2>
+            <ul id="post-list"></ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

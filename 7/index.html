@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Data Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #refresh-btn {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Data Pengguna</h1>
+        <div class="error-message" id="error-message" style="display: none;"></div>
+        <button id="refresh-btn">Refresh Data</button>
+    </div>
+    <table id="user-table">
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Nama Kota</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data dari API akan ditampilkan di sini -->
+        </tbody>
+    </table>
+
+    <script>
+        const apiUrl = 'https://jsonplaceholder.typicode.com/users';
+        const tableBody = document.querySelector('#user-table tbody');
+        const errorMessage = document.getElementById('error-message');
+        const refreshBtn = document.getElementById('refresh-btn');
+
+        // Fungsi untuk mengambil data dari API
+        async function fetchUserData() {
+            try {
+                // Bersihkan error message
+                errorMessage.style.display = 'none';
+                errorMessage.textContent = '';
+
+                // Fetch data dari API
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                displayUserData(data);
+            } catch (error) {
+                handleError(error);
+            }
+        }
+
+        // Fungsi untuk menampilkan data ke dalam tabel
+        function displayUserData(users) {
+            // Bersihkan tabel sebelumnya
+            tableBody.innerHTML = '';
+
+            // Tambahkan data ke tabel
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.address.city}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Fungsi untuk menangani error
+        function handleError(error) {
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = `Terjadi error: ${error.message}`;
+
+            // Bersihkan tabel jika ada error
+            tableBody.innerHTML = '';
+        }
+
+        // Event listener untuk tombol refresh
+        refreshBtn.addEventListener('click', fetchUserData);
+
+        // Ambil data saat pertama kali halaman dimuat
+        fetchUserData();
+    </script>
+</body>
+
+</html>
